@@ -5,7 +5,7 @@ export default function fetchCountries(name) {
     return fetch(`${BASE_URL}/${name}?fields=name,capital,population,flags,languages`)
         .then(response => response.json())
         .then(data => {
-            console.log(data);
+            // console.log(data);
             if (data.status === 404) { //{status: 404, message: 'Not Found'}
         
                 return Promise.reject(new Error(data.message));

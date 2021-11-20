@@ -13,9 +13,10 @@ const refs = {
 // console.log(refs.input, refs.countryList, refs.listItem);
   
 const onCountrySearch = e => {
-    const countryName = e.target.value;
+    const countryName = e.target.value.trim();
     if (countryName === '') {
-        return;
+        refs.countryList.innerHTML = '';
+        refs.listItem.innerHTML = '';
     }
     if (countryName.length === 1) {
         Notiflix.Notify.info('Too many matches found. Please enter a more specific name.');
@@ -72,6 +73,7 @@ const createMarkupList = data => {
 }
 
 const createMarkupItem = data => {
+    
     return data.map(({ name, flags, population, languages, capital}) =>
 
         `<div>
@@ -85,13 +87,11 @@ const createMarkupItem = data => {
             <h2 class = 'country-name'>${name.common}</h2>
             <p class = 'country-capital'><strong>Capital:</strong> ${capital}</p>
             <p class = 'country-population'><strong>Population:</strong> ${population}</p>
-            <p class = 'country-languages'><strong>Languages:</strong> ${languages.ukr}</p>
+            <p class = 'country-languages'><strong>Languages:</strong> ${Object.values(languages).join(", ")}</p>
         </div>`,
     )
     .join('');
 };
-
-// TODO: добавить lenguages
 
 /* <svg class='icon-svg' width='40' height='auto'>
     <use href='${flags.svg}'></use>
