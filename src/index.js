@@ -13,11 +13,39 @@ const refs = {
 // console.log(refs.input, refs.countryList, refs.listItem);
   
 const onCountrySearch = e => {
-    
-    fetchCountries(e.target.value)
-        .then(response => response.json())
-        .then(countries => console.log(countries))
+    const countryName = e.target.value.toLowerCase()
 
+    fetchCountries(countryName) //Promise {<pending>}
+        .then(renderCountries)
+        .catch(handleError);
 }
 
+const renderCountries = data => {
+    const markup = createMarkupList(data);
+    console.log(markup);
+
+    refs.countryList.innerHTML = markup;
+};
+
+const handleError = err => {
+    console.log('ERROR');
+}
+   
+
 refs.input.addEventListener('input', debounce(onCountrySearch, DEBOUNCE_DELAY));
+
+const createMarkupList = data => {
+    return data.map(({ name, flags }) =>
+        `<div>
+            <img
+            class='flag-img'
+            src='${flags.svg}'
+            alt='country flag'
+            width='40'
+            height='auto'
+            />
+            <p>${name.common}</p>
+        </div>`,
+    )
+    .join('');   
+}
