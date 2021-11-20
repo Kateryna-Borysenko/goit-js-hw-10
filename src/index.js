@@ -11,7 +11,7 @@ const refs = {
     listItem: document.querySelector('.country-info')
 };
 // console.log(refs.input, refs.countryList, refs.listItem);
-  
+
 const onCountrySearch = e => {
     const countryName = e.target.value.trim();
     if (countryName === '') {
@@ -29,19 +29,19 @@ const onCountrySearch = e => {
 
 // Promise fulfilled
 const renderCountries = data => {
+    if (data.length > 10) {
+        Notiflix.Notify.info('Too many matches found. Please enter a more specific name.');
+    } else if (data.length > 2 && data.length < 11) {
 
-    if (data.length > 2 && data.length < 11) {
-        
         refs.countryList.innerHTML = createMarkupList(data);
         refs.listItem.innerHTML = '';
 
-    } else {
-        if (data.length === 1) {
-            
-            refs.listItem.innerHTML = createMarkupItem(data);;
-            refs.countryList.innerHTML = '';
-        }
-    }   
+    } else if (data.length === 1) {
+
+        refs.listItem.innerHTML = createMarkupItem(data);;
+        refs.countryList.innerHTML = '';
+    }
+
 };
 
 // Promise rejected
@@ -51,13 +51,13 @@ const handleError = error => {
     refs.countryList.innerHTML = '';
     refs.listItem.innerHTML = '';
 };
-   
+
 
 refs.input.addEventListener('input', debounce(onCountrySearch, DEBOUNCE_DELAY));
 
 const createMarkupList = data => {
     return data.map(({ name, flags }) =>
-        
+
         `<li>
             <img
             class='flag-img'
@@ -69,12 +69,12 @@ const createMarkupList = data => {
             <p class = 'country-name'>${name.common}</p>
         </li>`,
     )
-    .join('');   
+        .join('');
 }
 
 const createMarkupItem = data => {
-    
-    return data.map(({ name, flags, population, languages, capital}) =>
+
+    return data.map(({ name, flags, population, languages, capital }) =>
 
         `<div>
             <img
@@ -90,7 +90,7 @@ const createMarkupItem = data => {
             <p class = 'country-languages'><strong>Languages:</strong> ${Object.values(languages).join(", ")}</p>
         </div>`,
     )
-    .join('');
+        .join('');
 };
 
 /* <svg class='icon-svg' width='40' height='auto'>
