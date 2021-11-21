@@ -15,8 +15,8 @@ const refs = {
 const onCountrySearch = e => {
     const countryName = e.target.value.trim();
     if (countryName === '') {
-        refs.countryList.innerHTML = '';
-        refs.listItem.innerHTML = '';
+        Notiflix.Notify.info('You should enter a country name.');
+        changeMarkup('', '');
     }
     if (countryName.length === 1) {
         Notiflix.Notify.info('Too many matches found. Please enter a more specific name.');
@@ -32,14 +32,12 @@ const renderCountries = data => {
     if (data.length > 10) {
         Notiflix.Notify.info('Too many matches found. Please enter a more specific name.');
     } else if (data.length > 2 && data.length < 11) {
-
-        refs.countryList.innerHTML = createMarkupList(data);
-        refs.listItem.innerHTML = '';
+      
+        changeMarkup(createMarkupList(data), '');
 
     } else if (data.length === 1) {
 
-        refs.listItem.innerHTML = createMarkupItem(data);;
-        refs.countryList.innerHTML = '';
+        changeMarkup('', createMarkupItem(data));
     }
 
 };
@@ -48,8 +46,7 @@ const renderCountries = data => {
 const handleError = error => {
     Notiflix.Notify.failure('Oops, there is no country with that name');
     refs.input.value = '';
-    refs.countryList.innerHTML = '';
-    refs.listItem.innerHTML = '';
+    changeMarkup('', '');
 };
 
 
@@ -93,6 +90,7 @@ const createMarkupItem = data => {
         .join('');
 };
 
-/* <svg class='icon-svg' width='40' height='auto'>
-    <use href='${flags.svg}'></use>
-</svg> */
+function changeMarkup (action1, action2) {
+    refs.countryList.innerHTML = action1;
+    refs.listItem.innerHTML = action2;
+}
